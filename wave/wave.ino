@@ -5,12 +5,12 @@
 #define LED_L 8
 #define LED_R 7
 
-Servo servoLeft;          // Define left servo
-Servo servoRight;         // Define right servo
+Servo servoLeft;
+Servo servoRight;
 
 void setup() {
-  servoLeft.attach(SERVO_L);  // Set left servo to digital pin 10
-  servoRight.attach(SERVO_R);  // Set right servo to digital pin 9
+  servoLeft.attach(SERVO_L);
+  servoRight.attach(SERVO_R);
   pinMode(LED_L, OUTPUT);
   pinMode(LED_R, OUTPUT);
 }
