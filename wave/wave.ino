@@ -1,24 +1,26 @@
-int NUM_ANGLES = 1;
+#include <Servo.h>
 
-int lservo = 0;
-// Listing of pulse times for different angles. -90/90/0, according to spec sheet.
-int pulse[] = {2000, 1000, 1500};
+Servo servoLeft;          // Define left servo
+Servo servoRight;         // Define right servo
 
 void setup() {
-  pinMode(lservo, OUTPUT);
-  Serial.begin(9600);
+  servoLeft.attach(10);  // Set left servo to digital pin 10
+  servoRight.attach(9);  // Set right servo to digital pin 9
 }
 
 void loop() {
-  while(true) {
-    for(int i = 0; i < NUM_ANGLES; i++) {
-      digitalWrite(lservo, HIGH);
-      Serial.print(pulse[i]);
-      delayMicroseconds(pulse[i]);
-      digitalWrite(lservo, LOW);
-      Serial.print("Waiting.");
-      delay(5000); // Wait 5 seconds. 
-      Serial.print("Done waiting.");
-    }
-  }
+  forward();
+  delay(500);           // Wait 0.2s between back and forth waving. 
+  reverse();
+  delay(500);
+}
+
+void forward() {
+  servoLeft.write(0);
+  servoRight.write(180);
+}
+
+void reverse() {
+  servoLeft.write(180);
+  servoRight.write(0);
 }
