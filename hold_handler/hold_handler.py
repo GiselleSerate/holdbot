@@ -6,9 +6,6 @@ import time
 from .proximity import distance
 from .classifier import SmartClassifier, record
 
-#TODO: Add GPIO i/o
-#TODO: Add classifier
-
 _RUN_HOLD_HANDLER = False
 _HOLD_LISTENER_CV = threading.Condition()
 _CLF_QUEUE = []
