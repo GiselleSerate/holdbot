@@ -2,6 +2,8 @@
 import RPi.GPIO as GPIO
 import time
  
+GPIO.cleanup()
+
 #GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
  
@@ -43,7 +45,8 @@ def distance():
 
 
 if __name__ == '__main__':
-    GPIO.cleanup()
+    pass
+   #GPIO.cleanup()
 """    try:
         while True:
             dist = distance()
