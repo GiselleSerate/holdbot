@@ -4,12 +4,9 @@ import time # DEBUG for sleeping
 # arduinoSerialData = serial.Serial('/dev/ttyACM0',9600)
 # Port corresponding to COM3 when running through WSL
 arduinoSerialData = serial.Serial('/dev/ttyS3',9600)
-currTime = int(round(time.time()))
-while 1:
-	while(arduinoSerialData.in_waiting>0):
-		#print('RX: ', end='')
-		c = arduinoSerialData.read()
-		print(c)
+
+def alert_action():
+    currTime = int(round(time.time()))
 
 	oldTime = currTime
 	currTime = int(round(time.time()))
