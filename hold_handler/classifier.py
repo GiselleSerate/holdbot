@@ -1,3 +1,4 @@
+import os
 import keras
 from keras.models import Sequential, load_model
 import librosa
@@ -5,7 +6,6 @@ import sounddevice as sd
 import numpy as np
 import scipy.io.wavfile as wav
 import scipy.signal as signal
-
 
 def record(duration = 2, fs =44100):
     myrecording = sd.rec(duration * fs, samplerate=fs, channels=2, dtype='float32')
@@ -37,7 +37,7 @@ def get_feature(X, sample_rate=44100):
 
 class SmartClassifier:
     def __init__(self):
-        self.model = load_model("classify_nn.h5")
+        self.model = load_model("classify_nn3.h5")
     def classify(self, rec, sample_rate= 44100):
         features = get_feature(rec, sample_rate)
         pred_class = np.argmax(self.model.predict(features))
