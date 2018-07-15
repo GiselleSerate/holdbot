@@ -1,7 +1,6 @@
 import sounddevice as sd
 import numpy as np
 import scipy.io.wavfile as wav
-import matplotlib.pyplot as plt
 import scipy.signal as signal
 
 
@@ -19,7 +18,7 @@ def save_recording(rec, outputfile, fs = 44100,  iswav = True):
     np.save(outputfile, rec) 
 
 
-for i in range(10):
-    rec = record()
-    outfile = "data/hold/" + str(i) +".wav"
-    save_recording(rec, outfile)
+# for i in range(10):
+#     rec = record()
+#     outfile = "data/hold/" + str(i) +".wav"
+#     save_recording(rec, outfile)
