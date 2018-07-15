@@ -31,13 +31,13 @@ def get_feature(X, sample_rate=44100):
     # spectral contrast
     contrast = np.mean(librosa.feature.spectral_contrast(S=stft, sr=sample_rate).T,axis=0)
    # tonnetz = np.mean(librosa.feature.tonnetz(y=librosa.effects.harmonic(X), sr=sample_rate).T,axis=0)
-    ext_features = np.hstack([mfccs])
+    ext_features = np.hstack([mfccs, contrast])
     features = np.vstack([features,ext_features])
     return features
 
 class SmartClassifier:
     def __init__(self):
-        self.model = load_model("classify_nn.h5.h5")
+        self.model = load_model("classify_nn.h5")
     def classify(self, rec, sample_rate= 44100):
         features = get_feature(rec, sample_rate)
         pred_class = np.argmax(self.model.predict(features))
