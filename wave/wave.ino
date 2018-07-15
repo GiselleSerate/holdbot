@@ -25,19 +25,18 @@ void loop() {
     freakOut = Serial.read();
     Serial.write(freakOut);
     Serial.println();
-//    freakOut = 0;
   }
 
-  if(freakOut == '0') {
-//    Serial.println('WAGH');
+  if(freakOut == '2') {
+    // Panic.
     blinkAndWave();
   }
   else if(freakOut == '1') {
-//    Serial.println('BLAGH');
+    // Watch. 
     lights(HIGH);
   }
-  else {
-//    Serial.println('SILENCE');
+  else if(freakOut == '0') {
+    // Sleep. 
     lights(LOW);
   }
 }
