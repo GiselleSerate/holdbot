@@ -26,7 +26,7 @@ def hold_listener():
     global _HOLD_LISTENER_CV
     global _CLF_CV
 
-    hold_buffer_size = 5
+    hold_buffer_size = 10
     buff_bot_prop = 0.2
     buff_top_prop = 0.2
     hl_ringbuff = RingBuffer(hold_buffer_size)
@@ -35,18 +35,18 @@ def hold_listener():
             hl_ringbuff.add(distance())
             continue
 
+        hl_ringbuff.pop()
+        hl_ringbuff.add(distance())
         rb_vals = sorted(hl_ringbuff.buffer)
         bot_idx = math.floor(hold_buffer_size * buff_bot_prop)
         top_idx = hold_buffer_size - math.ceil(hold_buffer_size * buff_top_prop)
-        rb_vals = [bot_idx : top_idx]
-        filtered_distance = sum(rb_vals) / hold_buffer_size
+        sum_vals = 0
+        for i in range(bot_idx, top_idx):
+            sum_vals += hl_ringbuff.buffer[i]
+        filtered_distance = sum_vals / hold_buffer_size
         cur_state = (filtered_distance <= 7.0)
 
         if _RUN_HOLD_HANDLER != cur_state:
-            num_con_changes += 1
-            if num_con_changes < change_threshold:
-                continue
-            num_con_changes = 0
             _HOLD_LISTENER_CV.acquire()
             _RUN_HOLD_HANDLER = cur_state
             if not cur_state:
@@ -103,7 +103,7 @@ def run_handler():
     global _CLF_QUEUE
     global _CLF_CV
 
-    classifier = SmartClassifier()
+    classifier = DummyClassifier()
 
     #Run hold activate listener
     hl_thread = threading.Thread(target=hold_listener)
