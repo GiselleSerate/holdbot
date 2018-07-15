@@ -33,22 +33,24 @@ def extract_feature(file_name):
     # mel = np.mean(librosa.feature.melspectrogram(X, sr=sample_rate).T,axis=0)
 
     # spectral contrast
-    # contrast = np.mean(librosa.feature.spectral_contrast(S=stft, sr=sample_rate).T,axis=0)
+    contrast = np.mean(librosa.feature.spectral_contrast(S=stft, sr=sample_rate).T,axis=0)
 
     # tonnetz = np.mean(librosa.feature.tonnetz(y=librosa.effects.harmonic(X), sr=sample_rate).T,axis=0)
-    return mfccs #mfccs, chroma #mel #contrast,tonnetz
+    # print(chroma.shape)
+    # print(contrast.shape)
+    return mfccs, contrast #mel #contrast,tonnetz
 
 def parse_audio_files(parent_dir,sub_dirs,file_ext='*.wav'):
-    features, labels = np.empty((0,40)), np.empty(0)
+    features, labels = np.empty((0,47)), np.empty(0)
     for label, sub_dir in enumerate(sub_dirs):
         for fn in glob.glob(os.path.join(parent_dir, sub_dir, file_ext)):
             try:
-                mfcc = extract_feature(fn)
+                mfccs, contrast = extract_feature(fn)
                 # print(mfccs.shape)
             except Exception as e:
                 print("[Error] extract feature error. %s" % (e))
                 continue
-            ext_features = np.hstack([mfcc])
+            ext_features = np.hstack([mfccs, contrast])
             features = np.vstack([features,ext_features])
             # labels = np.append(labels, fn.split('/')[1])
             labels = np.append(labels, label)
@@ -56,12 +58,12 @@ def parse_audio_files(parent_dir,sub_dirs,file_ext='*.wav'):
     return np.array(features), np.array(labels, dtype = np.int)
 
 def one_hot_encode(labels):
+
     n_labels = len(labels)
     n_unique_labels = len(np.unique(labels))
     one_hot_encode = np.zeros((n_labels,n_unique_labels))
     one_hot_encode[np.arange(n_labels), labels] = 1
     return one_hot_encode
-
 # Get features and labels
 r = os.listdir("data/")
 r.sort()

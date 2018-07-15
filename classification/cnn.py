@@ -25,7 +25,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 # Build the Neural Network
 model = Sequential()
 
-model.add(Conv1D(64, 3, input_shape=(40, 1)))
+model.add(Conv1D(64, 3, input_shape=(59, 1)))
 model.add(BatchNormalization())
 model.add(Activation("relu"))
 model.add(Conv1D(64, 3))
@@ -40,7 +40,7 @@ model.add(BatchNormalization())
 model.add(Activation("relu"))
 model.add(GlobalAveragePooling1D())
 model.add(Dropout(0.7))
-model.add(Dense(3, activation='softmax'))
+model.add(Dense(2, activation='softmax'))
 model.compile(loss='categorical_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
@@ -50,8 +50,8 @@ model.compile(loss='categorical_crossentropy',
 # plot_model(model, to_file='model.png')
 
 # Convert label to onehot
-y_train = keras.utils.to_categorical(y_train - 1, num_classes=3)
-y_test = keras.utils.to_categorical(y_test - 1, num_classes=3)
+y_train = keras.utils.to_categorical(y_train - 1, num_classes=2)
+y_test = keras.utils.to_categorical(y_test - 1, num_classes=2)
 
 X_train = np.expand_dims(X_train, axis=2)
 X_test = np.expand_dims(X_test, axis=2)

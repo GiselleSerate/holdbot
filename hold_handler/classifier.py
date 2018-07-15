@@ -38,7 +38,7 @@ def get_feature(X, sample_rate=44100):
 
 class SmartClassifier:
     def __init__(self):
-        self.model = load_model("hold_classifier.h5")
+        self.model = load_model("classify_nn.h5.h5")
     def classify(self, rec, sample_rate= 44100):
         features = get_feature(rec, sample_rate)
         pred_class = np.argmax(self.model.predict(features))
