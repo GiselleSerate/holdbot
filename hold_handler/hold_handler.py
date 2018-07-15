@@ -4,9 +4,7 @@ import serial
 import time
 
 from .proximity import distance
-
-#TODO: Add GPIO i/o
-#TODO: Add classifier
+from .classifier import SmartClassifier, record
 
 _RUN_HOLD_HANDLER = False
 _HOLD_LISTENER_CV = threading.Condition()
@@ -61,11 +59,12 @@ def get_mic_input():
         while (not _RUN_HOLD_HANDLER):
             _HOLD_LISTENER_CV.wait()
         _HOLD_LISTENER_CV.release()
-        rand = random.random()
-        if rand > 0.6:
-            _CLF_CV.acquire()
-            _CLF_QUEUE.append("dummy")
-            _CLF_CV.release()
+        cur_recording = record()
+        _CLF_CV.acquire()
+        _CLF_QUEUE.append(cur_recording)
+        _CLF_CV.release()
+
+arduinoSerialData = serial.Serial('/dev/ttyACM0',9600)
 
 def reset_state():
     global _RUN_HOLD_HANDLER
@@ -74,23 +73,13 @@ def reset_state():
     print("STATE BEING RESET")
     _RUN_HOLD_HANDLER = False
     _CLF_QUEUE = []
-
-arduinoSerialData = serial.Serial('/dev/ttyACM0',9600)
+    arduinoSerialData.write(b'0')
 
 def alert_action():
-    global _RUN_HOLD_HANDLER
+    arduinoSerialData.write(b'2')
 
-    currTime = int(round(time.time()))
-
-    while _RUN_HOLD_HANDLER:
-        oldTime = currTime
-        currTime = int(round(time.time()))
-        if(oldTime == currTime):
-            continue
-        if currTime % 10 == 5:
-            arduinoSerialData.write(b'1')
-        elif currTime % 10 == 0:
-            arduinoSerialData.write(b'0')
+def listen_action():
+    arduinoSerialData.write(b'1')
 
 def send_alert():
     print("ALERT!")
@@ -102,7 +91,7 @@ def run_handler():
     global _CLF_QUEUE
     global _CLF_CV
 
-    classifier = DummyClassifier()
+    classifier = SmartClassifier()
 
     #Run hold activate listener
     hl_thread = threading.Thread(target=hold_listener)
@@ -118,6 +107,8 @@ def run_handler():
         _HOLD_LISTENER_CV.release()
 
         print("PRE PROCESS")
+
+        listen_action()
 
         #Begin classifying incoming data
         while (_RUN_HOLD_HANDLER):
