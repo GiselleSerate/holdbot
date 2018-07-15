@@ -30,7 +30,7 @@ def get_audio_files(cat_link, link_set):
 def download_file(link):
     filename = link.split('/')[-1]
     full_path = os.path.join(_FILE_DIR, filename)
-    full_link = _SAMPLES_BASE + link
+    full_link = _BASE_URL + link
     file_req = requests.get(full_link, stream=True)
     with open(full_path, 'wb') as af:
         for chunk in file_req.iter_content(chunk_size=1024):
