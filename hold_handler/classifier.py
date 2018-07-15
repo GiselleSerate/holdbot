@@ -8,7 +8,6 @@ import scipy.signal as signal
 
 
 def record(duration = 2, fs =44100):
-    print( "Recording Audio")
     myrecording = sd.rec(duration * fs, samplerate=fs, channels=2, dtype='float32')
     sd.wait()
     myrecording_filtered = signal.medfilt2d(myrecording)

@@ -2,9 +2,11 @@ import threading
 import random
 import serial
 import time
+import math
 
 from .proximity import distance
 from .classifier import SmartClassifier, record
+from .util import RingBuffer
 
 _RUN_HOLD_HANDLER = False
 _HOLD_LISTENER_CV = threading.Condition()
@@ -24,12 +26,22 @@ def hold_listener():
     global _HOLD_LISTENER_CV
     global _CLF_CV
 
-    #Just for preventing spurious changes
-    change_threshold = 3
-    num_con_changes = 0
+    hold_buffer_size = 5
+    buff_bot_prop = 0.2
+    buff_top_prop = 0.2
+    hl_ringbuff = RingBuffer(hold_buffer_size)
     while True:
-        cur_state = (distance() < 7.0)
-        time.sleep(0.5)
+        if not hl_ringbuff.is_full:
+            hl_ringbuff.add(distance())
+            continue
+
+        rb_vals = sorted(hl_ringbuff.buffer)
+        bot_idx = math.floor(hold_buffer_size * buff_bot_prop)
+        top_idx = hold_buffer_size - math.ceil(hold_buffer_size * buff_top_prop)
+        rb_vals = [bot_idx : top_idx]
+        filtered_distance = sum(rb_vals) / hold_buffer_size
+        cur_state = (filtered_distance <= 7.0)
+
         if _RUN_HOLD_HANDLER != cur_state:
             num_con_changes += 1
             if num_con_changes < change_threshold:
