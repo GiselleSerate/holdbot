@@ -13,7 +13,7 @@ from matplotlib.pyplot import specgram
 import soundfile as sf
 
 def extract_feature(file_name):
-    X, sample_rate = sf.read(file_name, dtype='float32')
+    X, sample_rate = sf.read(file_name, dtype='float64')
     if X.ndim > 1:
         X = X[:,0]
     X = X.T

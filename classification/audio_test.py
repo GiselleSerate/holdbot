@@ -19,7 +19,7 @@ def save_recording(rec, outputfile, fs = 44100,  iswav = True):
     np.save(outputfile, rec) 
 
 
-for i in range(10):
-    rec = record()
-    outfile = "data/hold/" + str(i) +".wav"
-    save_recording(rec, outfile)
+# for i in range(10):
+#     rec = record()
+#     outfile = "data/hold/" + str(i) +".wav"
+#     save_recording(rec, outfile)
