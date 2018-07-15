@@ -3,11 +3,8 @@ import keras
 from keras.models import Sequential, load_model
 import h5py 
 import librosa
-import numpy as np
 import sounddevice as sd
 import numpy as np
-import scipy.io.wavfile as wav
-import matplotlib.pyplot as plt
 import scipy.signal as signal
 
 from audio_test import *
@@ -29,7 +26,6 @@ def get_feature(X, sample_rate=44100):
     mel = np.mean(librosa.feature.melspectrogram(X, sr=sample_rate).T,axis=0)
     # spectral contrast
     contrast = np.mean(librosa.feature.spectral_contrast(S=stft, sr=sample_rate).T,axis=0)
-
     tonnetz = np.mean(librosa.feature.tonnetz(y=librosa.effects.harmonic(X), sr=sample_rate).T,axis=0)
     ext_features = np.hstack([mfccs,chroma,mel,contrast,tonnetz])
     features = np.vstack([features,ext_features])
@@ -46,4 +42,5 @@ def classify(rec, sample_rate = 44110):
 
 
 rec = record()
+print("done recoding")
 print(classify(rec))

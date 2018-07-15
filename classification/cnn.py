@@ -25,7 +25,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 # Build the Neural Network
 model = Sequential()
 
-model.add(Conv1D(64, 3, activation='relu', input_shape=(193, 1)))
+model.add(Conv1D(64, 3, activation='relu', input_shape=(40, 1)))
 model.add(Conv1D(64, 3, activation='relu'))
 model.add(MaxPooling1D(3))
 model.add(Conv1D(128, 3, activation='relu'))
