@@ -1,17 +1,16 @@
 from .proximity import distance
-from .classifier import SmartClassifier, record
-from .util import RingBuffer
 from collections import deque 
 from alert import blink, speak, wave
 import RPi.GPIO as GPIO
 import time
 from hold_handler import alert_action, reset_state, listen_action
 
-
 CLASSIFY = True
 
-arduinoSerialData = serial.Serial('/dev/ttyACM0',9600)
+if CLASSIFY: # tensorflow too long to load
+    from .classifier import SmartClassifier, record
 
+arduinoSerialData = serial.Serial('/dev/ttyACM0',9600)
 
 dist_q = deque(maxlen = 10)
 classer = SmartClassifier()
