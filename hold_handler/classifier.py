@@ -41,7 +41,7 @@ class SmartClassifier:
     def classify(self, rec, sample_rate= 44100):
         features = get_feature(rec, sample_rate)
         pred_class = np.argmax(self.model.predict(features))
-        if pred_class < 2:
+        if pred_class > 0:
             return True
         else:
             return False
