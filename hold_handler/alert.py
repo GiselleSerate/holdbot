@@ -5,7 +5,7 @@ import sounddevice as sd
 import soundfile as sf
 
 
-GPIO.cleanup()
+#GPIO.cleanup()
 
 #GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
