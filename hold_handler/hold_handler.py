@@ -87,10 +87,10 @@ def reset_state():
     print("STATE BEING RESET")
     _RUN_HOLD_HANDLER = False
     _CLF_QUEUE = []
-    arduinoSerialData.write(b'0')
+    arduinoSerialData.write('0')
 
 def alert_action():
-    arduinoSerialData.write(b'2')
+    arduinoSerialData.write(b'0')
 
 def listen_action():
     arduinoSerialData.write(b'1')

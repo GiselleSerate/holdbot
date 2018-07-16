@@ -6,7 +6,7 @@ import time
 from hold_handler import alert_action, reset_state, listen_action
 import serial 
 
-#import offhold
+import offhold
 
 CLASSIFY = False
 
@@ -35,17 +35,22 @@ try:
        # dist_q.append(distance())
        while True:
        # while mean(dist_q) < 6.0:
-            listen_action()
+       #     listen_action()
             if CLASSIFY:
                 rec = record()
                 is_hold = classer.classify(rec)
             else:
                 is_hold = False
             if not is_hold:
+               # print("alert")
                 alert_action()
+                time.sleep(0.1)
+                listen_action()
+                offhold.alert_offhold()
+               # print("done alert")
                 #speak()
             time.sleep(0.1)
-except:
-    print("HERE")
+except Exception as e:
+    print(e)
     #reset_state()
     pass
