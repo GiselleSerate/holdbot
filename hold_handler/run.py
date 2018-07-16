@@ -15,6 +15,15 @@ arduinoSerialData = serial.Serial('/dev/ttyACM0',9600)
 
 dist_q = deque(maxlen = 10)
 
+def dance_forever():
+    while True:
+        try:
+            alert_action()
+            time.sleep(1)
+            reset_state()
+        except:
+            pass
+
 try:
     reset_state()
     while True:
