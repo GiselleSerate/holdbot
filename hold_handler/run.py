@@ -9,11 +9,11 @@ CLASSIFY = True
 
 if CLASSIFY: # tensorflow too long to load
     from .classifier import SmartClassifier, record
+    classer = SmartClassifier()
 
 arduinoSerialData = serial.Serial('/dev/ttyACM0',9600)
 
 dist_q = deque(maxlen = 10)
-classer = SmartClassifier()
 
 try:
     reset_state()
