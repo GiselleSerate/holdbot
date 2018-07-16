@@ -81,7 +81,6 @@ arduinoSerialData = serial.Serial('/dev/ttyACM0',9600)
 def reset_state():
     global _RUN_HOLD_HANDLER
     global _CLF_QUEUE
-
     print("STATE BEING RESET")
     _RUN_HOLD_HANDLER = False
     _CLF_QUEUE = []
