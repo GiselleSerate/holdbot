@@ -24,6 +24,9 @@ def dance_forever():
         except:
             pass
 
+dance_forever()
+
+"""
 try:
     reset_state()
     while True:
@@ -42,3 +45,4 @@ try:
 except:
     reset_state()
     pass
+"""
