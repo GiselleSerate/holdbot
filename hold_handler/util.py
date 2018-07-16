@@ -22,3 +22,5 @@ class RingBuffer:
     @property
     def is_full(self):
         return self.num_items == self.max_size
+
+

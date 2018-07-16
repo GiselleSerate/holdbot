@@ -14,7 +14,7 @@ GPIO_ECHO = 24
 #set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
- 
+
 def distance():
     # set Trigger to HIGH
     GPIO.output(GPIO_TRIGGER, True)
@@ -46,7 +46,6 @@ def distance():
 
 if __name__ == '__main__':
     pass
-   #GPIO.cleanup()
 """    try:
         while True:
             dist = distance()
