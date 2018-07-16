@@ -5,7 +5,7 @@ import sounddevice as sd
 import soundfile as sf
 
 
-def blink(times = 2):
+def blink(GPIO_RIGHT_EYE, GPIO_LEFT_EYE, times = 2):
     for i in range(times):
         GPIO.output(GPIO_RIGHT_EYE, 1)
         GPIO.output(GPIO_LEFT_EYE, 1)

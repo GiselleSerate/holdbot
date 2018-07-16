@@ -29,6 +29,6 @@ while True:
         rec = record()
         is_hold = classer.classify(rec)
         if not is_hold:
-            blink()
+            blink(GPIO_RIGHT_EYE, GPIO_LEFT_EYE)
             speak()
     time.sleep(0.1)
