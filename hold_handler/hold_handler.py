@@ -90,7 +90,12 @@ def reset_state():
     arduinoSerialData.write('0')
 
 def alert_action():
-    arduinoSerialData.write(b'0')
+    try:
+        arduinoSerialData.write(b'0')
+        arduinoSerialData.write(b'2')
+        return 0
+    except:
+        return 1
 
 def listen_action():
     arduinoSerialData.write(b'1')

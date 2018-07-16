@@ -43,9 +43,10 @@ try:
                 is_hold = False
             if not is_hold:
                # print("alert")
-                alert_action()
+                alert_success = alert_action()
                 time.sleep(0.1)
-                listen_action()
+                if alert_success == 1:
+                    listen_action()
                 offhold.alert_offhold()
                # print("done alert")
                 #speak()
