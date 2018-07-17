@@ -1,56 +1,43 @@
-#from proyximity import distance
+from proximity import distance
 from collections import deque
-#from alert import blink, speak, wave
-#import RPi.GPIO as GPIO
+from alert import blink, speak, wave
+from numpy import mean
+
+import RPi.GPIO as GPIO
 import time
-from hold_handler import alert_action, reset_state, listen_action
+#from hold_handler import alert_action, reset_state, listen_action
 import serial 
 
-import offhold
+#import offhold
 
-CLASSIFY = False
+CLASSIFY = True
 
 if CLASSIFY: # tensorflow too long to load
-    from .classifier import SmartClassifier, record
+    from classifier import SmartClassifier, record
     classer = SmartClassifier()
 
 #arduinoSerialData = serial.Serial('/dev/ttyACM0',9600)
 
 dist_q = deque(maxlen = 10)
 
-def dance_forever():
-    while True:
-        try:
-            alert_action()
-            time.sleep(1)
-            reset_state()
-        except:
-            pass
-
 try:
-   # reset_state()
     while True:
-       print("HII")
-       # print(distance())
-       # dist_q.append(distance())
-       while True:
-       # while mean(dist_q) < 6.0:
-       #     listen_action()
+       dist = int(distance())
+#       print(dist)
+       dist_q.append(dist)
+       while mean(dist_q) < 8.0:
             if CLASSIFY:
                 rec = record()
                 is_hold = classer.classify(rec)
             else:
                 is_hold = False
             if not is_hold:
-               # print("alert")
-                alert_action()
-                time.sleep(0.1)
-                listen_action()
-                offhold.alert_offhold()
-               # print("done alert")
-                #speak()
+                print("alert")
+                wave(1)
+                blink()
             time.sleep(0.1)
+            break
 except Exception as e:
+    GPIO.cleanup()
     print(e)
-    #reset_state()
     pass

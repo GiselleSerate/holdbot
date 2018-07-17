@@ -7,18 +7,17 @@ import time
 #GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
  
-print("setting")
+
 #set GPIO Pins
 GPIO_TRIGGER = 18
 GPIO_ECHO = 24
 
-print("setup")
  
 #set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
  
-print("done setup")
+
 
 def distance():
     # set Trigger to HIGH
@@ -34,11 +33,10 @@ def distance():
     # save StartTime
     while GPIO.input(GPIO_ECHO) == 0:
         StartTime = time.time()
-        print("is 0") 
+
     # save time of arrival
     while GPIO.input(GPIO_ECHO) == 1:
         StopTime = time.time()
-        print("is 1")
 
     # time difference between start and arrival
     TimeElapsed = StopTime - StartTime
@@ -51,8 +49,9 @@ def distance():
 
 
 if __name__ == '__main__':
-    pass
+#    pass
    #GPIO.cleanup()
+    """
     try:
         while True:
             print("call dist")
@@ -64,4 +63,4 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("Measurement stopped by User")
         GPIO.cleanup()
-
+    """
