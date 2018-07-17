@@ -1,6 +1,7 @@
+#!/usr/bin/env python3
 from proximity import distance
 from collections import deque
-from alert import blink, speak, wave
+from alert import blink, speak, wave, freakout
 from numpy import mean
 
 import RPi.GPIO as GPIO
@@ -10,7 +11,7 @@ import serial
 
 #import offhold
 
-CLASSIFY = True
+CLASSIFY = False
 
 if CLASSIFY: # tensorflow too long to load
     from classifier import SmartClassifier, record
@@ -25,7 +26,7 @@ try:
        dist = int(distance())
 #       print(dist)
        dist_q.append(dist)
-       while mean(dist_q) < 8.0:
+       if mean(dist_q) < 8.0:
             if CLASSIFY:
                 rec = record()
                 is_hold = classer.classify(rec)
@@ -33,10 +34,8 @@ try:
                 is_hold = False
             if not is_hold:
                 print("alert")
-                wave(1)
-                blink()
-            time.sleep(0.1)
-            break
+                freakout(1)
+            time.sleep(0.01)
 except Exception as e:
     GPIO.cleanup()
     print(e)

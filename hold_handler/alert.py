@@ -28,6 +28,11 @@ GPIO.setup(GPIO_RIGHT_SPOON, GPIO.OUT)
 
 
 
+#turn eyes on 
+GPIO.output(GPIO_RIGHT_EYE, 1)
+GPIO.output(GPIO_LEFT_EYE, 1)
+
+
 def wave(times = 2):
     L = GPIO.PWM(GPIO_LEFT_SPOON, 50)
     R = GPIO.PWM(GPIO_RIGHT_SPOON, 50)
@@ -37,7 +42,7 @@ def wave(times = 2):
         L.ChangeDutyCycle(7.5)
         R.ChangeDutyCycle(7.5)
         time.sleep(0.5)
-        L.ChangeDutyCycle(12.5)
+        L.ChangeDutyCycle(2.5)
         R.ChangeDutyCycle(12.5)
         time.sleep(0.5)
        # L.ChangeDutyCycle(2.5)
@@ -48,7 +53,7 @@ def blink(times = 2):
     for i in range(times):
         GPIO.output(GPIO_RIGHT_EYE, 1)
         GPIO.output(GPIO_LEFT_EYE, 1)
-        time.sleep(0.1)
+        time.sleep(0.05)
         GPIO.output(GPIO_RIGHT_EYE, 0)
         GPIO.output(GPIO_LEFT_EYE, 0)
 
@@ -57,4 +62,24 @@ def speak():
     sd.play(X)
     sd.wait()
 
-wave()
+L = GPIO.PWM(GPIO_LEFT_SPOON, 50)
+R = GPIO.PWM(GPIO_RIGHT_SPOON, 50)
+L.start(7.5)
+R.start(10.5)
+
+def freakout(times = 2):
+#    L = GPIO.PWM(GPIO_LEFT_SPOON, 50)
+#    R = GPIO.PWM(GPIO_RIGHT_SPOON, 50)
+#    L.start(7.5)
+#    R.start(7.5)
+    for i in range(times):
+        L.ChangeDutyCycle(7.5)
+        R.ChangeDutyCycle(10.5)
+        blink(1)
+        time.sleep(0.5)
+        L.ChangeDutyCycle(2.5)
+        R.ChangeDutyCycle(5.5)
+        blink(1)
+        time.sleep(0.5)
+
+ 
