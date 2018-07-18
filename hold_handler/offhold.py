@@ -1,8 +1,9 @@
 import sounddevice as sd
 import soundfile as sf
+import os
 
 def alert_offhold():
-    X, _ = sf.read('OFFHOLD.wav', dtype='float64')
+    audiofile = os.path.join(os.path.dirname(__file__), 'OFFHOLD.wav')
+    X, _ = sf.read(audiofile, dtype='float64')
     sd.play(X)
     sd.wait()
-

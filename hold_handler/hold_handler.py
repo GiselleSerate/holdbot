@@ -4,10 +4,6 @@ import serial
 import time
 import math
 
-#from .proximity import distance
-#from .classifier import SmartClassifier, record
-#from .util import RingBuffer
-
 _RUN_HOLD_HANDLER = False
 _HOLD_LISTENER_CV = threading.Condition()
 _CLF_QUEUE = []
@@ -74,6 +70,7 @@ def get_mic_input():
         cur_recording = record()
         _CLF_CV.acquire()
         _CLF_QUEUE.append(cur_recording)
+        _CLF_CV.notifyAll()
         _CLF_CV.release()
 
 try:
@@ -96,8 +93,16 @@ def listen_action():
     arduinoSerialData.write(b'1')
 
 def send_alert():
+    global _HOLD_LISTENER_CV
+    global _RUN_HOLD_HANDLER
+
     print("ALERT!")
+    alert_offhold()
     alert_action()
+    _HOLD_LISTENER_CV.acquire()
+    while (_RUN_HOLD_HANDLER):
+        _HOLD_LISTENER_CV.wait()
+    _HOLD_LISTENER_CV.release()
 
 def run_handler():
     global _RUN_HOLD_HANDLER
@@ -105,7 +110,7 @@ def run_handler():
     global _CLF_QUEUE
     global _CLF_CV
 
-    classifier = DummyClassifier()
+    classifier = SmartClassifier()
 
     #Run hold activate listener
     hl_thread = threading.Thread(target=hold_listener)

@@ -6,18 +6,14 @@ from numpy import mean
 
 import RPi.GPIO as GPIO
 import time
-#from hold_handler import alert_action, reset_state, listen_action
 import serial 
 
-#import offhold
-
-CLASSIFY = False
+CLASSIFY = True
 
 if CLASSIFY: # tensorflow too long to load
     from classifier import SmartClassifier, record
     classer = SmartClassifier()
 
-#arduinoSerialData = serial.Serial('/dev/ttyACM0',9600)
 
 dist_q = deque(maxlen = 10)
 

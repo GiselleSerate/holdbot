@@ -16,8 +16,6 @@ GPIO_ECHO = 24
 #set GPIO direction (IN / OUT)
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
- 
-
 
 def distance():
     # set Trigger to HIGH
@@ -49,18 +47,14 @@ def distance():
 
 
 if __name__ == '__main__':
-#    pass
-   #GPIO.cleanup()
-    """
-    try:
-        while True:
-            print("call dist")
-            dist = distance()
-            print ("Measured Distance = %.1f cm" % dist)
-            time.sleep(0.5)
+  try:
+    while True:
+      print("call dist")
+      dist = distance()
+      print ("Measured Distance = %.1f cm" % dist)
+      time.sleep(0.5)
  
         # Reset by pressing CTRL + C
-    except KeyboardInterrupt:
-        print("Measurement stopped by User")
-        GPIO.cleanup()
-    """
+  except KeyboardInterrupt:
+    print("Measurement stopped by User")
+    GPIO.cleanup()
