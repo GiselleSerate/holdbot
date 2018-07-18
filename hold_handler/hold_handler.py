@@ -4,11 +4,6 @@ import serial
 import time
 import math
 
-from .proximity import distance
-from .classifier import SmartClassifier, record
-from .util import RingBuffer
-from .offhold import alert_offhold
-
 _RUN_HOLD_HANDLER = False
 _HOLD_LISTENER_CV = threading.Condition()
 _CLF_QUEUE = []
@@ -78,19 +73,21 @@ def get_mic_input():
         _CLF_CV.notifyAll()
         _CLF_CV.release()
 
-arduinoSerialData = serial.Serial('/dev/ttyACM1',9600)
+try:
+    arduinoSerialData = serial.Serial('/dev/ttyACM1',9600)
+except:
+    arduinoSerialData = serial.Serial('/dev/ttyACM0',9600)
 
 def reset_state():
     global _RUN_HOLD_HANDLER
     global _CLF_QUEUE
-
     print("STATE BEING RESET")
     _RUN_HOLD_HANDLER = False
     _CLF_QUEUE = []
-    arduinoSerialData.write(b'0')
+    arduinoSerialData.write('0')
 
 def alert_action():
-    arduinoSerialData.write(b'2')
+    arduinoSerialData.write(b'0')
 
 def listen_action():
     arduinoSerialData.write(b'1')
